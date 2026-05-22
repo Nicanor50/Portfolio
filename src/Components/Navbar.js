@@ -1,7 +1,7 @@
 import React from 'react'
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import logo from './Images/logo.avif';
+// import logo from './Images/logo.avif';
 
 
 const Navbar = () => {

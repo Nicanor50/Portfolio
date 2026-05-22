@@ -3,9 +3,9 @@ import project1 from "./Images/1.png";
 import project2 from "./Images/2.png";
 import project3 from "./Images/3.png";
 import laravel from "./Images/laravel.png";
-import react from "./Images/react.png";
+// import react from "./Images/react.png";
 import css from "./Images/css.png";
-import bootstrap from "./Images/bootstrap.png";
+// import bootstrap from "./Images/bootstrap.png";
 
 const Project = () => {
     return (
