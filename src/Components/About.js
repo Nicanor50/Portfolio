@@ -1,99 +1,96 @@
 import React, { useState, useRef, useEffect } from 'react'
-import image from "./Images/image.png";
-// import { AnimatedCounter } from "react-animated-counter";
+import image from './Images/image.png'
+import './Styles/Fichier.css'
 
+const stats = [
+    { key: 'projects', end: 10, label: 'Projets réalisés' },
+    { key: 'clients', end: 3, label: 'Clients satisfaits' },
+    { key: 'exp', end: 1, label: "Années d'expérience" },
+]
+
+const traits = [
+    'Résolution de problèmes',
+    'Design soucieux des détails',
+    'Apprentissage continu',
+    'Orienté utilisateur',
+]
 
 const About = () => {
-
-    const [counts, setCounts] = useState({
-        projects: 0,
-        clients: 0,
-        experience: 0
-    });
-
-    const ref = useRef(null);
-    const started = useRef(false);
+    const [counts, setCounts] = useState({ projects: 0, clients: 0, exp: 0 })
+    const sectionRef = useRef(null)
+    const started = useRef(false)
 
     useEffect(() => {
         const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && !started.current) {
-                    started.current = true;
-
-                    animateValue("projects", 10, 1000);
-                    animateValue("clients", 3, 1000);
-                    animateValue("experience", 1, 1000);
+            ([entry]) => {
+                if (entry.isIntersecting && !started.current) {
+                    started.current = true
+                    stats.forEach(({ key, end }) => animateValue(key, end, 1000))
                 }
             },
-            { threshold: 0.5 }
-        );
-
-        if (ref.current) observer.observe(ref.current);
-
-        return () => observer.disconnect();
-    }, []);
+            { threshold: 0.4 }
+        )
+        if (sectionRef.current) observer.observe(sectionRef.current)
+        return () => observer.disconnect()
+    }, [])
 
     const animateValue = (key, end, duration) => {
-        let start = 0;
-        const incrementTime = duration / end;
-
-        const counter = setInterval(() => {
-            start += 1;
-
-            setCounts(prev => ({
-                ...prev,
-                [key]: start
-            }));
-
-            if (start === end) clearInterval(counter);
-        }, incrementTime);
-    };
-
-
-
+        let current = 0
+        const interval = setInterval(() => {
+            current++
+            setCounts((prev) => ({ ...prev, [key]: current }))
+            if (current >= end) clearInterval(interval)
+        }, duration / end)
+    }
 
     return (
-        <div className='about'>
-            <div className="container my-5">
-                <div className='row'>
-                    <div className='col-6 me-2'>
-                        <h1>A propos</h1>
-                        <p> Passionné par la technologie notamment le développement web, j’aime transformer
-                            des idées en
-                            solutions numériques innovantes et performantes. J’explore constamment de nouvelles technologies et
-                            je construis des projets variés allant des applications web complexes aux plateformes
-                            e-commerce qui me permettent d’apprendre, d’expérimenter et de
-                            repousser mes limites.
+        <section className="about-section" id="about">
+            <div className="container">
+                <div className="about-inner">
 
-                            Curieux et orienté solution, je cherche toujours à
-                            améliorer mes compétences et à créer des expériences numériques utiles,
-                            performantes et bien conçues.
+                    <div className="about-content">
+                        <div>
+                            <p className="about-eyebrow">Qui suis-je ?</p>
+                            <h2 className="about-heading">À propos de moi</h2>
+                        </div>
+
+                        <p className="about-text">
+                            Passionné par le développement web, j'aime transformer des idées en{' '}
+                            <strong>solutions numériques performantes</strong>. J'explore constamment
+                            de nouvelles technologies et construis des projets variés — des applications
+                            web complexes aux plateformes e-commerce — pour apprendre, expérimenter
+                            et repousser mes limites.
                         </p>
-                        <div className='d-flex justify-content-between'>
 
-                            <div ref={ref}>
-                                <h1>{counts.projects}+</h1>
-                                <p>Projets réalisés</p>
-                            </div>
+                        <p className="about-text">
+                            Curieux et orienté solution, je cherche toujours à améliorer mes compétences
+                            et à créer des expériences numériques{' '}
+                            <strong>utiles, performantes et bien conçues</strong>.
+                        </p>
 
-                            <div ref={ref}>
-                                <h1>{counts.clients}+</h1>
-                                <p>Clients satisfaits</p>
-                            </div>
-                            <div ref={ref}>
-                                <h1>{counts.experience}+</h1>
-                                <p>Années d'expérience</p>
-                            </div>
+                        <div className="about-tags">
+                            {traits.map((t) => (
+                                <span key={t} className="about-tag">{t}</span>
+                            ))}
+                        </div>
+
+                        <div className="about-stats" ref={sectionRef}>
+                            {stats.map(({ key, label }) => (
+                                <div key={key} className="stat-card">
+                                    <div className="stat-num">{counts[key]}+</div>
+                                    <div className="stat-label">{label}</div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                    <div className='col'>
-                        <img src={image} alt="outils" className='img-fluid' />
+
+                    <div className="about-img-wrap">
+                        <img src={image} alt="Outils et technologies" className="about-img" />
                     </div>
+
                 </div>
-
-
             </div>
-        </div>
+        </section>
     )
 }
 

@@ -1,35 +1,64 @@
 import React from 'react'
-import './Styles/Fichier.css';
-import Button from '@mui/material/Button';
-import img from "./Images/img.jpg";
+import img from './Images/img.jpg'
+import './Styles/Fichier.css'
 
 const Header = () => {
     return (
-        <div className="header ">
+        <header className="hero-section">
             <div className="container">
-                <div className="row py-4">
-                    <div className='col-8 me-1 d-flex flex-column justify-content-center'>
-                        <h2>DEVELOPPEUR WEB</h2>
-                        <p>Créateur d'expériences numériques modernes performantes. Spécialisé en React, Laravel et architecture cloud</p>
-                        <div className="row">
-                            <Button className='col-3 m-3 rounded-2 text-white' style={{ backgroundColor: "#3b82f6" }}>Voir mes projets</Button>
-                            <Button className='col-3 m-3 rounded-2 text-white' style={{ backgroundColor: "#F58D0F" }}>Me contacter</Button>
+                <div className="hero-inner">
+
+                    <div className="hero-content">
+                        <div className="hero-badge">
+                            <span className="hero-badge-dot" />
+                            Disponible pour de nouvelles opportunités
+                        </div>
+
+                        <h1 className="hero-title">
+                            Développeur Web <br />
+                            <span className="hero-title-muted">Full Stack</span>
+                        </h1>
+
+                        <p className="hero-sub">
+                            Je conçois et développe des applications web modernes et performantes,
+                            du design à la mise en production. Spécialisé en{' '}
+                            <strong>React</strong> et <strong>Laravel</strong>, j'aime transformer
+                            des idées en interfaces soignées.
+                        </p>
+
+                        <div className="hero-stats">
+                            <div className="hero-stat">
+                                <span className="hero-stat-num">3+</span>
+                                <span className="hero-stat-label">Projets réalisés</span>
+                            </div>
+                            <div className="hero-stat">
+                                <span className="hero-stat-num">2+</span>
+                                <span className="hero-stat-label">Années d'expérience</span>
+                            </div>
+                            <div className="hero-stat">
+                                <span className="hero-stat-num">5+</span>
+                                <span className="hero-stat-label">Technologies maîtrisées</span>
+                            </div>
+                        </div>
+
+                        <div className="hero-actions">
+                            <a href="#projects" className="btn-primary">Voir mes projets</a>
+                            <a href="#contact" className="btn-secondary">Me contacter</a>
                         </div>
                     </div>
 
-                    <div className="col-3">
-                        <img src={img} alt="" className="w-100 h-auto object-cover shadow-xl"
-                            style={{
-                                borderRadius: "30% 70% 70% 30% / 67% 62% 38% 33%",
-                                border: "#fa71fe 8px solid"
-                            }}
-                        />
+                    <div className="hero-img-wrap">
+                        <img src={img} alt="Photo de profil" className="hero-img" />
+                        <div className="hero-stack">
+                            {['React', 'Laravel', 'PHP', 'JavaScript', 'Figma'].map((tech) => (
+                                <span key={tech} className="stack-tag">{tech}</span>
+                            ))}
+                        </div>
                     </div>
+
                 </div>
-
             </div>
-
-        </div>
+        </header>
     )
 }
 

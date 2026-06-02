@@ -1,53 +1,52 @@
 import React from 'react'
+import './Styles/Fichier.css'
+import { IconLayout2, IconServer, IconGitBranch, IconTools } from "@tabler/icons-react";
+
+
+const skillsData = [
+    {
+        icon: IconLayout2,
+        title: 'Frontend',
+        items: ['HTML', 'CSS', 'JavaScript', 'React', 'Bootstrap'],
+    },
+    {
+        icon: IconServer,
+        title: 'Backend',
+        items: ['PHP', 'Laravel', 'REST API'],
+    },
+    {
+        icon: IconGitBranch,
+        title: 'Git',
+        items: ['Versionnement', 'Init & configuration', 'Gestion locale', 'Branches & fusion'],
+    },
+    {
+        icon: IconTools,
+        title: 'Outils',
+        items: ['VS Code', 'Figma', 'Webpack', 'ESLint'],
+    },
+]
 
 const Skills = () => {
     return (
-        <div>
-            <div className="container my-5">
-                <h1 className="py-2">Compétences</h1>
-                <div className="d-flex justify-content-between gap-1">
-                    <div className='border border-1 p-3 section_competence'>
-                        <h2>Frontend</h2>
-                        <ul>
-                            <li>HTML</li>
-                            <li>CSS</li>
-                            <li>JavaScript</li>
-                            <li>React</li>
-                            <li>Bootstrap</li>
-                        </ul>
-                    </div>
-                    <div className='border border-1 p-3 section_competence'>
-                        <h2>Backend</h2>
-                        <ul>
-                            <li>PHP</li>
-                            <li>Laravel</li>
-                            <li>REST API</li>
-                        </ul>
-
-                    </div>
-                    <div className='border border-1 p-3 section_competence'>
-                        <h2>Git</h2>
-                        <ul>
-                            <li>Versionnement</li>
-                            <li>Initialisation et configuration</li>
-                            <li>Gestion locale</li>
-                            <li>Branchement et Fusion</li>
-
-                        </ul>
-                    </div>
-                    <div className='border border-1 p-3 section_competence'>
-                        <h2>Outils</h2>
-                        <ul>
-                            <li>Visual Studio Code</li>
-                            <li>Figma</li>
-                            <li>Webpack</li>
-                            <li>ESLint</li>
-                        </ul>
-                    </div>
+        <section className="skills-section py-20 px-4 max-w-5xl mx-auto">
+            <div className="container">
+                <p className="skills-eyebrow">Ce que je maîtrise</p>
+                <h2 className="skills-heading">Compétences</h2>
+                <div className="skills-grid">
+                    {skillsData.map(({ icon: Icon, title, items }) => (
+                        <div key={title} className="skill-card">
+                            <Icon size={32} className="card-icon" aria-hidden="true" />
+                            <p className="card-title">{title}</p>
+                            <ul className="skill-list">
+                                {items.map((item) => (
+                                    <li key={item}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                 </div>
             </div>
-
-        </div>
+        </section>
     )
 }
 

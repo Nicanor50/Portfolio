@@ -1,86 +1,71 @@
 import React from 'react'
-import project1 from "./Images/1.png";
-import project2 from "./Images/2.png";
-import project3 from "./Images/3.png";
-import laravel from "./Images/laravel.png";
-// import react from "./Images/react.png";
-import css from "./Images/css.png";
-// import bootstrap from "./Images/bootstrap.png";
+import project1 from './Images/1.png'
+import project2 from './Images/2.png'
+import project3 from './Images/3.png'
+
+const projectsData = [
+    {
+        image: 1,
+        title: 'Site de location d\'objets',
+        description:
+            'Application web mettant en relation des propriétaires d\'objets avec des personnes souhaitant les louer temporairement.',
+        stack: ['Laravel', 'CSS'],
+        badge: 'Web app',
+        link: '#',
+    },
+    {
+        image: 2,
+        title: 'Site de vente — Supermarché',
+        description:
+            'Plateforme e-commerce avec profils admin et utilisateur, gestion des produits, panier et paiement à la livraison.',
+        stack: ['Laravel', 'Bootstrap'],
+        badge: 'E-commerce',
+        link: '#',
+    },
+    {
+        image: 3,
+        title: 'Site de e-learning',
+        description:
+            'Plateforme d\'apprentissage en ligne permettant aux utilisateurs d\'accéder à des cours et ressources pédagogiques.',
+        stack: ['React', 'CSS'],
+        badge: 'EdTech',
+        link: '#',
+    },
+]
 
 const Project = () => {
     return (
-        <div className="my-4">
+        <section className="projects-section">
             <div className="container">
-                <h1 className="title">Projets Récents</h1>
-                <div className="d-flex justify-content-between gap-5 mt-4">
-                    <div className="card p-2" style={{ width: "auto" }}>
-                        <img className="card-img-top" src={project1} alt="Card" />
-                        <div className="card-body">
-                            <h5 className="card-title">Site de location d'objets</h5>
-                            <p className="card-text">Cette application permet de mettre en relation des
-                                propriétaires d'objets à des personnes qui ont besoin de ces objets.
-                                En d'autres termes, c'est une application qui permet à ses utilisateurs
-                                d'avoir des informations sur des détenteurs d'objets dont ils ont besoin
-                                dans l'immédiat et qu'ils n'ont pas la possibilité de s'en acquérir.
-                            </p>
-                            <div>
-                                <h6 className="technology">Technologies utilisées :</h6>
-                                <ul className="list-unstyled d-flex flex-row justifiy-content-left align-items-left ">
-                                    <li><img src={laravel} alt="Laravel" className="img-skills" /></li>
-                                    <li><img src={css} alt="CSS" className="img-skills" /></li>
-                                </ul>
+                <p className="projects-eyebrow">Ce que j'ai réalisé</p>
+                <h2 className="projects-heading">Projets récents</h2>
+                <div className="projects-grid">
+                    {projectsData.map(({ image, title, description, stack, badge, link }) => (
+                        <div key={title} className="project-card">
+                            <img src={image} alt={title} className="project-img" />
+                            <div className="project-body">
+                                <p className="project-title">{title}</p>
+                                <p className="project-desc">{description}</p>
+                                <div>
+                                    <p className="tech-label">Stack</p>
+                                    <div className="tech-tags">
+                                        {stack.map((tech) => (
+                                            <span key={tech} className="tech-tag">{tech}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="project-footer">
+                                    <a href={link} className="project-link">
+                                        Voir le projet <span aria-hidden="true">→</span>
+                                    </a>
+                                    <span className="project-badge">{badge}</span>
+                                </div>
                             </div>
-
-                            <a href=" " className="">Voir le projet</a>
                         </div>
-                    </div>
-                    <div className="card p-2" style={{ width: "auto" }}>
-                        <img className="card-img-top " src={project2} alt="Card" />
-                        <div className="card-body">
-                            <h5 className="card-title text-capitalize">Site de vente de Supermaché</h5>
-                            <p className="card-text">
-                                Une application web pour un supermaché disposant de deux profils. Le profil admin et utilisateur. L'admin
-                                est chargé de faire toute sorte d'action dans le but de la gestion des produits sur le site. L'utilisateur
-                                a la capacité de mettre en place son panier avec les produits et ensuite commander en payant ou en acceptant les
-                                paiements à la livraison.
-                            </p>
-                            <div>
-                                <h6 className="technology">Technologies utilisées :</h6>
-                                <ul>
-
-                                </ul>
-                            </div>
-
-                            <a href=" " className="">Voir le projet</a>
-                        </div>
-                    </div>
-                    <div className="card p-2" style={{ width: "auto" }}>
-                        <img className="card-img-top " src={project3} alt="Card" />
-                        <div className="card-body">
-                            <h5 className="card-title">Site de e-learning</h5>
-                            <p className="card-text">Cette application permet de mettre en relation des
-                                propriétaires d'objets à des personnes qui ont besoin de ces objets.
-                                En d'autres termes, c'est une application qui permet à ses utilisateurs
-                                d'avoir des informations sur des détenteurs d'objets dont ils ont besoin
-                                dans l'immédiat et qu'ils n'ont pas la possibilité de s'en acquérir.
-                            </p>
-                            <div>
-                                <h6 className="technology">Technologies utilisées :</h6>
-                                <ul>
-
-                                </ul>
-                            </div>
-
-                            <a href=" " className="">Voir le projet</a>
-                        </div>
-                    </div>
-
+                    ))}
                 </div>
-
             </div>
-
-
-        </div>
+        </section>
     )
 }
 

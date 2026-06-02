@@ -1,6 +1,6 @@
 .App {
-  background: #0f0c29;
-  background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+  /* background: #030712; */
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #191753);
   color: white;
   font-family: "Roboto", sans-serif;
   --primary: #2563eb;
