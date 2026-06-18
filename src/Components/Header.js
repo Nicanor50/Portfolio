@@ -48,7 +48,7 @@ const Header = () => {
                     </div>
 
                     <div className="hero-img-wrap">
-                        <img src={img} alt="Photo de profil" className="hero-img" />
+                        <img src={img} alt=" " className="hero-img" />
                         <div className="hero-stack">
                             {['React', 'Laravel', 'PHP', 'JavaScript', 'Figma'].map((tech) => (
                                 <span key={tech} className="stack-tag">{tech}</span>

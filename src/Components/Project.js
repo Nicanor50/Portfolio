@@ -1,7 +1,7 @@
 import React from 'react'
-import project1 from './Images/1.png'
-import project2 from './Images/2.png'
-import project3 from './Images/3.png'
+// import project1 from './Images/1.png'
+// import project2 from './Images/2.png'
+// import project3 from './Images/3.png'
 
 const projectsData = [
     {
