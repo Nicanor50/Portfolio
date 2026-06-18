@@ -162,7 +162,7 @@ const Navbar = () => {
                                     onClick={() => { setActiveLink(link); setMenuOpen(false); }}
                                     style={{
                                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                        width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+                                        width: '100%', border: 'none', cursor: 'pointer',
                                         padding: '0.65rem 0.75rem',
                                         color: activeLink === link ? '#63ceff' : 'rgba(224,224,255,0.65)',
                                         fontSize: '0.9rem',
