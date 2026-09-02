@@ -1,83 +1,181 @@
-import React, { useState } from 'react'
-import './Styles/Fichier.css'
+import React, { useState } from 'react';
+import { Box, Typography, TextField, Button, Alert, Stack } from '@mui/material';
+import { AnimatePresence, motion } from 'framer-motion';
+import ScrollReveal from './Shared/ScrollReveal';
+import { gradients } from './theme';
+
+// Adresse de ton API Laravel. Définis REACT_APP_API_URL dans un .env
+// (ex: REACT_APP_API_URL=https://api.tondomaine.com) pour éviter de
+// coder l'URL en dur.
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/contact';
+
+const initialForm = { name: '', email: '', subject: '', message: '' };
 
 const Contact = () => {
-    const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+    const [form, setForm] = useState(initialForm);
+    const [errors, setErrors] = useState({});
+    const [status, setStatus] = useState('idle'); // idle | loading | success | error
 
-    const handleChange = (e) =>
-        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+        if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
+    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        // TODO: intégrer un service d'envoi (EmailJS, Formspree, etc.)
-        console.log(form)
-    }
+    const validate = () => {
+        const next = {};
+        if (!form.name.trim()) next.name = 'Le nom est requis.';
+        if (!form.email.trim()) next.email = "L'email est requis.";
+        else if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = 'Email invalide.';
+        if (!form.message.trim()) next.message = 'Le message est requis.';
+        setErrors(next);
+        return Object.keys(next).length === 0;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validate()) return;
+
+        setStatus('loading');
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify(form),
+            });
+            if (!res.ok) throw new Error('Request failed');
+            setStatus('success');
+            setForm(initialForm);
+        } catch (err) {
+            setStatus('error');
+        }
+    };
+
+    const inputSx = {
+        '& .MuiOutlinedInput-root': {
+            borderRadius: '12px',
+            background: 'rgba(255,255,255,0.03)',
+            color: '#e8e8f4',
+            '& fieldset': { borderColor: 'rgba(148,148,255,0.15)' },
+            '&:hover fieldset': { borderColor: 'rgba(148,148,255,0.3)' },
+            '&.Mui-focused fieldset': { borderColor: '#22d3ee' },
+        },
+        '& .MuiInputLabel-root': { color: '#8b8b9e' },
+    };
 
     return (
-        <section className="contact-section" id="contact">
-            <div className="container">
-                <div className="contact-inner">
+        <Box component="section" id="contact" sx={{ py: { xs: 8, md: 12 } }}>
+            <Box sx={{ maxWidth: 1200, mx: 'auto', px: { xs: 2, md: 4 } }}>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 6 }}>
 
-                    <div className="contact-info">
-                        <div>
-                            <p className="contact-eyebrow">Travaillons ensemble</p>
-                            <h2 className="contact-heading">Entrons en contact</h2>
-                        </div>
-                        <p className="contact-sub">
-                            Vous avez un projet en tête, une opportunité à discuter ou simplement
-                            envie d'échanger ? N'hésitez pas à me contacter, je réponds
-                            généralement sous 24h.
-                        </p>
-                        <div className="contact-channels">
-                            <a href="mailto:votre@email.com" className="contact-channel">
-                                <span className="channel-icon">✉</span>
-                                votre@email.com
-                            </a>
-                            <a href="https://linkedin.com/in/votre-profil" className="contact-channel" target="_blank" rel="noreferrer">
-                                <span className="channel-icon">in</span>
-                                linkedin.com/in/votre-profil
-                            </a>
-                            <a href="https://github.com/votre-profil" className="contact-channel" target="_blank" rel="noreferrer">
-                                <span className="channel-icon">gh</span>
-                                github.com/votre-profil
-                            </a>
-                        </div>
-                    </div>
+                    <ScrollReveal className="contact-info" style={{ flex: 1 }}>
+                        <Box sx={{ flex: 1 }}>
+                            <Typography sx={{ fontSize: 13, color: '#22d3ee', fontWeight: 600, mb: 1 }}>
+                                Travaillons ensemble
+                            </Typography>
+                            <Typography variant="h2" sx={{ fontSize: { xs: 28, md: 36 }, color: '#e8e8f4', mb: 2 }}>
+                                Entrons en contact
+                            </Typography>
+                            <Typography sx={{ color: '#8b8b9e', lineHeight: 1.8, mb: 3 }}>
+                                Vous avez un projet en tête, une opportunité à discuter ou simplement
+                                envie d'échanger ? N'hésitez pas à me contacter, je réponds
+                                généralement sous 24h.
+                            </Typography>
 
-                    <form className="contact-form" onSubmit={handleSubmit}>
-                        <div className="form-row">
-                            <div className="form-field">
-                                <label className="form-label" htmlFor="name">Nom</label>
-                                <input id="name" name="name" type="text" className="form-input"
-                                    placeholder="Jean Dupont" value={form.name} onChange={handleChange} />
-                            </div>
-                            <div className="form-field">
-                                <label className="form-label" htmlFor="email">Email</label>
-                                <input id="email" name="email" type="email" className="form-input"
-                                    placeholder="jean@email.com" value={form.email} onChange={handleChange} />
-                            </div>
-                        </div>
-                        <div className="form-field">
-                            <label className="form-label" htmlFor="subject">Sujet</label>
-                            <input id="subject" name="subject" type="text" className="form-input"
-                                placeholder="Proposition de projet, collaboration…"
-                                value={form.subject} onChange={handleChange} />
-                        </div>
-                        <div className="form-field">
-                            <label className="form-label" htmlFor="message">Message</label>
-                            <textarea id="message" name="message" className="form-input"
-                                placeholder="Décrivez votre projet ou votre demande…"
-                                value={form.message} onChange={handleChange} />
-                        </div>
-                        <button type="submit" className="btn-submit">
-                            Envoyer le message
-                        </button>
-                    </form>
+                            <Stack spacing={1.25}>
+                                {[
+                                    { label: 'akpovobarachie@email.com', href: 'mailto:akpovobarachie@email.com' },
+                                    { label: 'linkedin.com/in/nicadev', href: 'https://www.linkedin.com/in/nicanor-akpovo-36a86229a/' },
+                                    { label: 'github.com/nicaakpovo', href: 'https://github.com/Nicanor50' },
+                                ].map(({ label, href }) => (
+                                    <Box
+                                        key={label}
+                                        component="a"
+                                        href={href}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        sx={{
+                                            fontSize: 13.5, color: '#c9d1d9', textDecoration: 'none',
+                                            px: 2, py: 1.25, borderRadius: '10px',
+                                            border: '1px solid rgba(148,148,255,0.1)',
+                                            '&:hover': { borderColor: 'rgba(34,211,238,0.4)', color: '#22d3ee' },
+                                        }}
+                                    >
+                                        {label}
+                                    </Box>
+                                ))}
+                            </Stack>
+                        </Box>
+                    </ScrollReveal>
 
-                </div>
-            </div>
-        </section>
-    )
-}
+                    <ScrollReveal delay={0.1} className="contact-form-wrap" style={{ flex: 1.2 }}>
+                        <Box
+                            component="form"
+                            onSubmit={handleSubmit}
+                            noValidate
+                            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+                        >
+                            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+                                <TextField
+                                    label="Nom" name="name" value={form.name} onChange={handleChange}
+                                    error={!!errors.name} helperText={errors.name}
+                                    sx={inputSx} InputLabelProps={{ sx: { color: '#8b8b9e' } }}
+                                />
+                                <TextField
+                                    label="Email" name="email" type="email" value={form.email} onChange={handleChange}
+                                    error={!!errors.email} helperText={errors.email}
+                                    sx={inputSx}
+                                />
+                            </Box>
+                            <TextField
+                                label="Sujet" name="subject" value={form.subject} onChange={handleChange}
+                                sx={inputSx}
+                            />
+                            <TextField
+                                label="Message" name="message" value={form.message} onChange={handleChange}
+                                error={!!errors.message} helperText={errors.message}
+                                multiline minRows={4} sx={inputSx}
+                            />
 
-export default Contact
+                            <Button
+                                type="submit"
+                                disabled={status === 'loading'}
+                                sx={{
+                                    alignSelf: 'flex-start',
+                                    background: gradients.primary,
+                                    color: '#08080f',
+                                    fontWeight: 600,
+                                    px: 3,
+                                    '&:hover': { filter: 'brightness(1.1)' },
+                                    '&.Mui-disabled': { opacity: 0.6, color: '#08080f' },
+                                }}
+                            >
+                                {status === 'loading' ? 'Envoi…' : 'Envoyer le message'}
+                            </Button>
+
+                            <AnimatePresence>
+                                {status === 'success' && (
+                                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                                        <Alert severity="success" sx={{ borderRadius: '12px' }}>
+                                            Message envoyé ! Je reviens vers vous sous 24h.
+                                        </Alert>
+                                    </motion.div>
+                                )}
+                                {status === 'error' && (
+                                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                                        <Alert severity="error" sx={{ borderRadius: '12px' }}>
+                                            Une erreur est survenue. Réessayez ou écrivez-moi directement par email.
+                                        </Alert>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </Box>
+                    </ScrollReveal>
+
+                </Box>
+            </Box>
+        </Box>
+    );
+};
+
+export default Contact;
